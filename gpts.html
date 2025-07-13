@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SereneAI - GPT Tools</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    header {
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-menu {
+      position: relative;
+    }
+    .app-menu-btn {
+      background: #e5e5e5;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    .app-menu-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      margin-top: 0.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      padding: 0.5rem;
+      width: 200px;
+      z-index: 100;
+    }
+    .app-menu.open .app-menu-dropdown {
+      display: block;
+    }
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    @media (min-width: 480px) {
+      .app-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .app-tile {
+      background: #f3f3f3;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      padding: 0.75rem 0.5rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .services-section {
+      padding: 2rem 0;
+    }
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 600px) {
+      .service-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 900px) {
+      .service-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card:hover .flip-inner,
+    .flip-card.flip .flip-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-front, .flip-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f0f0f0;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+      backface-visibility: hidden;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+    .cta-button {
+      display: inline-block;
+      background: #0a84ff;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header id="site-header">
+      <h1 class="site-title">SereneAI</h1>
+      <div class="app-menu" id="app-menu">
+        <button id="app-menu-btn" class="app-menu-btn" aria-label="Open site menu" aria-haspopup="true" aria-expanded="false">Navigation</button>
+        <nav class="app-menu-dropdown" aria-label="Site">
+          <div class="app-grid">
+            <a href="index.html" class="app-tile">🏠 Home</a>
+            <a href="about.html" class="app-tile">ℹ️ About</a>
+            <a href="#services" class="app-tile">🛠️ Services</a>
+            <a href="prompt-library.html" class="app-tile">🧠 Prompt Library</a>
+            <a href="gpts.html" class="app-tile">🤖 GPT Tools</a>
+            <a href="community.html" class="app-tile">🧑‍🤝‍🧑 Community</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="services-section">
+        <h2>Helpful tools designed to support your productivity, automation, and creative workflows.</h2>
+        <div class="service-grid">
+          <article class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <h4>UK Co-Creator for Better AI Outputs</h4>
+              </div>
+              <div class="flip-back">
+                <div>
+                  <p>A custom GPT that helps UK users prompt more effectively for strategy, content, and communication.</p>
+                  <a class="cta-button" href="https://chatgpt.com/g/g-6869aaddbec48191812a111533a36363-uk-co-creator-for-better-ai-outputs">View GPT</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer intentionally matches home page (currently empty) -->
+
+    <script>
+      document.querySelectorAll('.flip-card').forEach(card => {
+        card.addEventListener('click', () => {
+          card.classList.toggle('flip');
+        });
+      });
+      const appMenu = document.getElementById('app-menu');
+      const appMenuBtn = document.getElementById('app-menu-btn');
+      appMenuBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const opened = appMenu.classList.toggle('open');
+        appMenuBtn.setAttribute('aria-expanded', opened);
+      });
+      document.addEventListener('click', e => {
+        if (!appMenu.contains(e.target)) {
+          appMenu.classList.remove('open');
+          appMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>
