@@ -112,6 +112,20 @@
     .btn-secondary:hover {
       background: #d5d5d5;
     }
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.15);
+      padding: 1rem;
+      display: none;
+      z-index: 300;
+    }
+    .cookie-banner[aria-hidden="false"] {
+      display: block;
+    }
     .cta-button {
       display: inline-block;
       background: #0a84ff;
@@ -363,6 +377,11 @@
       </div>
     </div>
 
+    <div id="cookie-banner" class="cookie-banner" role="dialog" aria-hidden="true" aria-label="Cookie consent">
+      <span>This site uses cookies to enhance your experience.</span>
+      <button id="accept-cookies" class="btn-primary" type="button">Accept</button>
+    </div>
+
 <script>
   // REVIEW: consider moving scripts to an external file
   document.querySelectorAll('.flip-card').forEach(card => {
@@ -451,6 +470,19 @@
 
   setupModal('contact-modal', 'open-modal');
   setupModal('newsletter-modal', 'open-newsletter'); // AI: newsletter setup
+
+  // AI: cookie banner logic
+  (function() {
+    const banner = document.getElementById('cookie-banner');
+    const accept = document.getElementById('accept-cookies');
+    if (!localStorage.getItem('cookies-accepted')) {
+      banner.setAttribute('aria-hidden', 'false');
+    }
+    accept.addEventListener('click', () => {
+      localStorage.setItem('cookies-accepted', 'true');
+      banner.setAttribute('aria-hidden', 'true');
+    });
+  })();
 </script>
 
   </div>
