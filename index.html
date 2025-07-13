@@ -18,6 +18,67 @@
     }
     header {
       padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-menu {
+      position: relative;
+    }
+    .app-menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 4px);
+      gap: 2px;
+    }
+    .icon-grid span {
+      width: 4px;
+      height: 4px;
+      background: #333;
+      border-radius: 1px;
+      display: block;
+    }
+    .app-menu-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      margin-top: 0.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      padding: 0.5rem;
+      width: 200px;
+      z-index: 100;
+    }
+    .app-menu.open .app-menu-dropdown {
+      display: block;
+    }
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    @media (min-width: 480px) {
+      .app-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .app-tile {
+      background: #f3f3f3;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      padding: 0.75rem 0.5rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .hero-section {
       background: #f9f9f9;
@@ -120,16 +181,25 @@
   <div class="layout">
     <header id="site-header">
       <h1 class="site-title">SereneAI</h1>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="prompt-library.html">Prompt Library</a></li>
-          <li><a href="gpts.html">GPT Tools</a></li>
-          <li><a href="community.html">Community</a></li>
-        </ul>
-      </nav>
+      <div class="app-menu" id="app-menu">
+        <button id="app-menu-btn" class="app-menu-btn" aria-label="Open site menu" aria-haspopup="true" aria-expanded="false">
+          <span class="icon-grid" aria-hidden="true">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </span>
+        </button>
+        <nav class="app-menu-dropdown" aria-label="Site">
+          <div class="app-grid">
+            <a href="index.html" class="app-tile">Home</a>
+            <a href="about.html" class="app-tile">About</a>
+            <a href="services.html" class="app-tile">Services</a>
+            <a href="prompt-library.html" class="app-tile">Prompt Library</a>
+            <a href="gpts.html" class="app-tile">GPT Tools</a>
+            <a href="community.html" class="app-tile">Community</a>
+          </div>
+        </nav>
+      </div>
     </header>
 
     <main>
@@ -196,6 +266,19 @@
     card.addEventListener('click', () => {
       card.classList.toggle('flip');
     });
+  });
+  const appMenu = document.getElementById('app-menu');
+  const appMenuBtn = document.getElementById('app-menu-btn');
+  appMenuBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const opened = appMenu.classList.toggle('open');
+    appMenuBtn.setAttribute('aria-expanded', opened);
+  });
+  document.addEventListener('click', e => {
+    if (!appMenu.contains(e.target)) {
+      appMenu.classList.remove('open');
+      appMenuBtn.setAttribute('aria-expanded', 'false');
+    }
   });
 </script>
 
