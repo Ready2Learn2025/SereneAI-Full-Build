@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SereneAI</title>
   <style>
-    html { /* AI: enable smooth anchor scrolling */
-      scroll-behavior: smooth;
+    /* REVIEW: consider moving styles to a separate CSS file for caching */
+    html {
+      scroll-behavior: smooth; /* REVIEW: enables smooth anchor scrolling */
     }
     body {
       margin: 0;
@@ -236,8 +237,8 @@
     <header id="site-header">
       <h1 class="site-title">SereneAI</h1>
       <div class="app-menu" id="app-menu">
-        <button id="app-menu-btn" class="app-menu-btn" aria-label="Open site menu" aria-haspopup="true" aria-expanded="false">Navigation</button>
-        <nav class="app-menu-dropdown" aria-label="Site">
+        <button id="app-menu-btn" class="app-menu-btn" type="button" aria-label="Open site menu" aria-haspopup="true" aria-expanded="false" aria-controls="site-nav">Navigation</button> <!-- REVIEW: specify button type to prevent form submission -->
+        <nav id="site-nav" class="app-menu-dropdown" aria-label="Site">
           <div class="app-grid">
             <a href="index.html" class="app-tile">🏠 Home</a>
             <a href="about.html" class="app-tile">ℹ️ About</a>
@@ -256,15 +257,15 @@
         <p class="tagline">We guide UK businesses through automation and AI—calmly, clearly, and effectively.</p>
         <p class="tagline">Your partner for ethical AI strategies and automation support.</p>
         <div class="hero-buttons">
-          <button id="open-modal" class="btn-primary">Get Started</button>
-          <button id="open-newsletter" class="btn-secondary">Subscribe to Newsletter</button>
+          <button id="open-modal" class="btn-primary" type="button" aria-controls="contact-modal">Get Started</button> <!-- REVIEW: link button to modal -->
+          <button id="open-newsletter" class="btn-secondary" type="button" aria-controls="newsletter-modal">Subscribe to Newsletter</button>
         </div>
       </section>
 
 <section id="services" class="services-section"><!-- AI: Service flip tiles added -->
   <h3>Our Services</h3>
   <div class="service-grid">
-    <article class="flip-card">
+    <article class="flip-card" tabindex="0" role="button"> <!-- REVIEW: allow keyboard activation -->
       <div class="flip-inner">
         <div class="flip-front">
           <h4>AI Strategy &amp; Roadmapping</h4>
@@ -274,7 +275,7 @@
         </div>
       </div>
     </article>
-    <article class="flip-card">
+    <article class="flip-card" tabindex="0" role="button">
       <div class="flip-inner">
         <div class="flip-front">
           <h4>Automation Audits</h4>
@@ -284,7 +285,7 @@
         </div>
       </div>
     </article>
-    <article class="flip-card">
+    <article class="flip-card" tabindex="0" role="button">
       <div class="flip-inner">
         <div class="flip-front">
           <h4>Tool Setup &amp; Support</h4>
@@ -294,7 +295,7 @@
         </div>
       </div>
     </article>
-    <article class="flip-card">
+    <article class="flip-card" tabindex="0" role="button">
       <div class="flip-inner">
         <div class="flip-front">
           <h4>Ethical AI Consulting</h4>
@@ -313,7 +314,7 @@
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <button class="modal-close" aria-label="Close" data-close>&times;</button>
         <h3 id="modal-title">Get Started</h3>
-        <form>
+        <form><!-- REVIEW: add action and method when backend is ready -->
           <label for="name">Name</label>
           <input id="name" type="text" />
 
@@ -350,7 +351,7 @@
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="newsletter-title">
         <button class="modal-close" aria-label="Close" data-close>&times;</button>
         <h3 id="newsletter-title">Newsletter Sign-Up</h3>
-        <form>
+        <form><!-- REVIEW: add action and method when backend is ready -->
           <label for="newsletter-name">Name</label>
           <input id="newsletter-name" type="text" />
 
@@ -363,10 +364,17 @@
     </div>
 
 <script>
+  // REVIEW: consider moving scripts to an external file
   document.querySelectorAll('.flip-card').forEach(card => {
     card.addEventListener('click', () => {
       card.classList.toggle('flip');
     });
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('flip');
+      }
+    }); /* REVIEW: enable keyboard flipping */
   });
   const appMenu = document.getElementById('app-menu');
   const appMenuBtn = document.getElementById('app-menu-btn');
@@ -416,7 +424,6 @@
 
     function openModal() {
       modal.setAttribute('aria-hidden', 'false');
-      modal.style.display = 'flex';
       setFocusTrap();
       firstFocus.focus();
       document.addEventListener('keydown', trapFocus);
@@ -425,7 +432,6 @@
 
     function closeModal() {
       modal.setAttribute('aria-hidden', 'true');
-      modal.style.display = 'none';
       document.removeEventListener('keydown', trapFocus);
       document.removeEventListener('keydown', escClose);
       openBtn.focus();
