@@ -75,6 +75,11 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
+    @media (min-width: 900px) {
+      .service-grid {
+        grid-template-columns: repeat(4, 1fr); /* AI: show all tiles in a single row */
+      }
+    }
     .flip-card {
       perspective: 1000px;
     }
