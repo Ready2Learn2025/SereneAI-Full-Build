@@ -82,13 +82,17 @@
       margin-bottom: 2rem;
       font-size: 1.125rem;
     }
-    .hero-buttons a {
+    .hero-buttons a,
+    .hero-buttons button {
       display: inline-block;
       margin: 0 0.5rem;
       padding: 0.75rem 1.25rem;
       border-radius: 4px;
       text-decoration: none;
       transition: background 0.3s ease;
+      border: none;
+      font: inherit;
+      cursor: pointer;
     }
     .btn-primary {
       background: #0a84ff;
@@ -165,6 +169,59 @@
       transform: rotateY(180deg);
     }
 
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      z-index: 200;
+    }
+    .modal[aria-hidden="false"] {
+      display: flex;
+    }
+    .modal-dialog {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 500px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+    .modal form label {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .modal form input,
+    .modal form textarea,
+    .modal form select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .modal form textarea {
+      resize: vertical;
+    }
+
   </style>
 </head>
 <body>
@@ -192,7 +249,7 @@
         <p class="tagline">We guide UK businesses through automation and AI—calmly, clearly, and effectively.</p>
         <p class="tagline">Your partner for ethical AI strategies and automation support.</p>
         <div class="hero-buttons">
-          <a href="services.html" class="btn-primary">Get Started</a>
+          <button id="open-modal" class="btn-primary">Get Started</button>
           <a href="#newsletter" class="btn-secondary">Subscribe to Newsletter</a>
         </div>
       </section>
@@ -245,6 +302,42 @@
 
 </main>
 
+    <div id="contact-modal" class="modal" aria-hidden="true">
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" aria-label="Close" data-close>&times;</button>
+        <h3 id="modal-title">Get Started</h3>
+        <form>
+          <label for="name">Name</label>
+          <input id="name" type="text" />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" />
+
+          <label for="phone">Phone Number</label>
+          <input id="phone" type="tel" />
+
+          <label for="company">Company Name</label>
+          <input id="company" type="text" />
+
+          <label for="size">Company Size</label>
+          <select id="size">
+            <option value="1">1</option>
+            <option value="2-5">2–5</option>
+            <option value="6-10">6–10</option>
+            <option value="10-35">10–35</option>
+            <option value="35-75">35–75</option>
+            <option value="75+">75+</option>
+          </select>
+
+          <label for="problem">What problem are you trying to solve?</label>
+          <textarea id="problem"></textarea>
+
+          <label for="success">How would you measure success?</label>
+          <textarea id="success"></textarea>
+        </form>
+      </div>
+    </div>
+
 <script>
   document.querySelectorAll('.flip-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -262,6 +355,65 @@
     if (!appMenu.contains(e.target)) {
       appMenu.classList.remove('open');
       appMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Modal logic
+  const modal = document.getElementById('contact-modal');
+  const openModalBtn = document.getElementById('open-modal');
+  const closeElements = modal.querySelectorAll('[data-close]');
+  const focusSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  let firstFocus, lastFocus;
+
+  function setFocusTrap() {
+    const focusables = modal.querySelectorAll(focusSelectors);
+    firstFocus = focusables[0];
+    lastFocus = focusables[focusables.length - 1];
+  }
+
+  function trapFocus(e) {
+    if (e.key === 'Tab') {
+      if (e.shiftKey && document.activeElement === firstFocus) {
+        e.preventDefault();
+        lastFocus.focus();
+      } else if (!e.shiftKey && document.activeElement === lastFocus) {
+        e.preventDefault();
+        firstFocus.focus();
+      }
+    }
+  }
+
+  function escClose(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  }
+
+  function openModal() {
+    modal.setAttribute('aria-hidden', 'false');
+    modal.style.display = 'flex';
+    setFocusTrap();
+    firstFocus.focus();
+    document.addEventListener('keydown', trapFocus);
+    document.addEventListener('keydown', escClose);
+  }
+
+  function closeModal() {
+    modal.setAttribute('aria-hidden', 'true');
+    modal.style.display = 'none';
+    document.removeEventListener('keydown', trapFocus);
+    document.removeEventListener('keydown', escClose);
+    openModalBtn.focus();
+  }
+
+  openModalBtn.addEventListener('click', e => {
+    e.preventDefault();
+    openModal();
+  });
+  closeElements.forEach(el => el.addEventListener('click', closeModal));
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      closeModal();
     }
   });
 </script>
