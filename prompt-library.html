@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SereneAI - Prompt Library</title>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    header {
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .app-menu { position: relative; }
+    .app-menu-btn {
+      background: #e5e5e5;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    .app-menu-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      margin-top: 0.5rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      padding: 0.5rem;
+      width: 200px;
+      z-index: 100;
+    }
+    .app-menu.open .app-menu-dropdown { display: block; }
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    @media (min-width: 480px) {
+      .app-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .app-tile {
+      background: #f3f3f3;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #333;
+      padding: 0.75rem 0.5rem;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .prompt-section { padding: 2rem 0; }
+    .prompt-form label {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .prompt-form input,
+    .prompt-form textarea,
+    .prompt-form select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .prompt-form textarea { resize: vertical; }
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    @media (min-width: 600px) {
+      .prompt-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 900px) {
+      .prompt-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .prompt-card {
+      background: #f0f0f0;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .prompt-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .prompt-actions button {
+      background: #e5e5e5;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
+    .btn-primary {
+      background: #0a84ff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <header id="site-header">
+      <h1 class="site-title">SereneAI</h1>
+      <div class="app-menu" id="app-menu">
+        <button id="app-menu-btn" class="app-menu-btn" aria-label="Open site menu" aria-haspopup="true" aria-expanded="false">Navigation</button>
+        <nav class="app-menu-dropdown" aria-label="Site">
+          <div class="app-grid">
+            <a href="index.html" class="app-tile">🏠 Home</a>
+            <a href="about.html" class="app-tile">ℹ️ About</a>
+            <a href="#services" class="app-tile">🛠️ Services</a>
+            <a href="prompt-library.html" class="app-tile">🧠 Prompt Library</a>
+            <a href="gpts.html" class="app-tile">🤖 GPT Tools</a>
+            <a href="community.html" class="app-tile">🧑‍🤝‍🧑 Community</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="prompt-section">
+        <h2>Prompt Library</h2>
+        <p class="tagline">Explore, share, and save prompts designed to make AI more useful and human-centred.</p>
+        <form class="prompt-form">
+          <label for="prompt-title">Prompt Title</label>
+          <input id="prompt-title" type="text" name="prompt-title" />
+
+          <label for="prompt-body">Prompt Body</label>
+          <textarea id="prompt-body" name="prompt-body"></textarea>
+
+          <label for="visibility">Visibility</label>
+          <select id="visibility" name="visibility">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+          <button type="submit" class="btn-primary" style="margin-top:1rem;">Submit Prompt</button>
+        </form>
+      </section>
+
+      <section class="prompt-section">
+        <h2>Featured Prompts</h2>
+        <div class="prompt-grid">
+          <article class="prompt-card">
+            <h4>Brainstorming Assistant</h4>
+            <p>Generate a list of creative business ideas in the UK tech sector.</p>
+            <div class="prompt-actions">
+              <button aria-label="Like">👍</button>
+              <button aria-label="Dislike">👎</button>
+              <button aria-label="Save">⭐</button>
+              <button aria-label="Comment">💬</button>
+            </div>
+          </article>
+          <article class="prompt-card">
+            <h4>Email Polisher</h4>
+            <p>Rewrite the following email to sound more professional and concise.</p>
+            <div class="prompt-actions">
+              <button aria-label="Like">👍</button>
+              <button aria-label="Dislike">👎</button>
+              <button aria-label="Save">⭐</button>
+              <button aria-label="Comment">💬</button>
+            </div>
+          </article>
+          <article class="prompt-card">
+            <h4>Meeting Summary</h4>
+            <p>Provide a short summary of these meeting notes, highlighting key actions.</p>
+            <div class="prompt-actions">
+              <button aria-label="Like">👍</button>
+              <button aria-label="Dislike">👎</button>
+              <button aria-label="Save">⭐</button>
+              <button aria-label="Comment">💬</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer intentionally matches home page (currently empty) -->
+
+    <script>
+      const appMenu = document.getElementById('app-menu');
+      const appMenuBtn = document.getElementById('app-menu-btn');
+      appMenuBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const opened = appMenu.classList.toggle('open');
+        appMenuBtn.setAttribute('aria-expanded', opened);
+      });
+      document.addEventListener('click', e => {
+        if (!appMenu.contains(e.target)) {
+          appMenu.classList.remove('open');
+          appMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    </script>
+  </div>
+</body>
+</html>
