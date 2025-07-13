@@ -199,6 +199,7 @@
       justify-content: center;
       background: rgba(0,0,0,0.5);
       z-index: 200;
+      overflow-y: auto; /* AI: allow modal scrolling on mobile */
     }
     .modal[aria-hidden="false"] {
       display: flex;
@@ -211,6 +212,8 @@
       max-width: 500px;
       padding: 1.5rem;
       position: relative;
+      max-height: 90vh; /* AI: prevent content cut-off */
+      overflow-y: auto; /* AI: enable scrolling within the form */
     }
     .modal-close {
       position: absolute;
