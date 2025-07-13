@@ -5,8 +5,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SereneAI</title>
+  <style>
+    /* AI: Basic layout and hero styling */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    header {
+      padding: 1rem 0;
+    }
+    .hero-section {
+      background: #f9f9f9;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .hero-section h2 {
+      margin-bottom: 1rem;
+    }
+    .hero-section .tagline {
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+    }
+    .hero-buttons a {
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    .btn-primary {
+      background: #0a84ff;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #006edc;
+    }
+    .btn-secondary {
+      background: #e5e5e5;
+      color: #333;
+    }
+    .btn-secondary:hover {
+      background: #d5d5d5;
+    }
+  </style>
 </head>
 <body>
+  <div class="layout">
   <header id="site-header">
     <h1 class="site-title">SereneAI</h1>
     <nav class="main-nav">
@@ -24,8 +76,11 @@
   <main>
     <section id="hero" class="hero-section">
       <h2>Smarter Business Starts Here</h2>
-      <p class="tagline">Your partner for ethical AI strategies and automation support.</p>
-      <a href="services.html" class="cta-button">Get Started</a>
+      <p class="tagline">We guide UK businesses through automation and AI—calmly, clearly, and effectively.</p>
+      <div class="hero-buttons">
+        <a href="services.html" class="btn-primary">Get Started</a>
+        <a href="#newsletter" class="btn-secondary">Subscribe to Newsletter</a>
+      </div>
     </section>
 
     <section id="services" class="services-section">
@@ -63,5 +118,6 @@
     </nav>
     <p class="company-number">Company No. XXXXXXX</p>
   </footer>
+</div>
 </body>
 </html>
