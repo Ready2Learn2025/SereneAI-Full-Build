@@ -222,6 +222,10 @@
       resize: vertical;
     }
 
+    .newsletter-modal .modal-dialog { /* AI: smaller modal for newsletter */
+      max-width: 350px;
+    }
+
   </style>
 </head>
 <body>
@@ -250,7 +254,7 @@
         <p class="tagline">Your partner for ethical AI strategies and automation support.</p>
         <div class="hero-buttons">
           <button id="open-modal" class="btn-primary">Get Started</button>
-          <a href="#newsletter" class="btn-secondary">Subscribe to Newsletter</a>
+          <button id="open-newsletter" class="btn-secondary">Subscribe to Newsletter</button>
         </div>
       </section>
 
@@ -338,6 +342,22 @@
       </div>
     </div>
 
+    <div id="newsletter-modal" class="modal newsletter-modal" aria-hidden="true"> <!-- AI: added newsletter modal -->
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="newsletter-title">
+        <button class="modal-close" aria-label="Close" data-close>&times;</button>
+        <h3 id="newsletter-title">Newsletter Sign-Up</h3>
+        <form>
+          <label for="newsletter-name">Name</label>
+          <input id="newsletter-name" type="text" />
+
+          <label for="newsletter-email">Email</label>
+          <input id="newsletter-email" type="email" />
+
+          <button type="submit" class="btn-primary" style="margin-top:1rem;">Submit</button>
+        </form>
+      </div>
+    </div>
+
 <script>
   document.querySelectorAll('.flip-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -358,64 +378,69 @@
     }
   });
 
-  // Modal logic
-  const modal = document.getElementById('contact-modal');
-  const openModalBtn = document.getElementById('open-modal');
-  const closeElements = modal.querySelectorAll('[data-close]');
-  const focusSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-  let firstFocus, lastFocus;
+  // Modal logic reused for contact and newsletter
+  function setupModal(modalId, triggerId) {
+    const modal = document.getElementById(modalId);
+    const openBtn = document.getElementById(triggerId);
+    const closeEls = modal.querySelectorAll('[data-close]');
+    const focusSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    let firstFocus, lastFocus;
 
-  function setFocusTrap() {
-    const focusables = modal.querySelectorAll(focusSelectors);
-    firstFocus = focusables[0];
-    lastFocus = focusables[focusables.length - 1];
-  }
+    function setFocusTrap() {
+      const focusables = modal.querySelectorAll(focusSelectors);
+      firstFocus = focusables[0];
+      lastFocus = focusables[focusables.length - 1];
+    }
 
-  function trapFocus(e) {
-    if (e.key === 'Tab') {
-      if (e.shiftKey && document.activeElement === firstFocus) {
-        e.preventDefault();
-        lastFocus.focus();
-      } else if (!e.shiftKey && document.activeElement === lastFocus) {
-        e.preventDefault();
-        firstFocus.focus();
+    function trapFocus(e) {
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === firstFocus) {
+          e.preventDefault();
+          lastFocus.focus();
+        } else if (!e.shiftKey && document.activeElement === lastFocus) {
+          e.preventDefault();
+          firstFocus.focus();
+        }
       }
     }
-  }
 
-  function escClose(e) {
-    if (e.key === 'Escape') {
-      closeModal();
+    function escClose(e) {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
     }
-  }
 
-  function openModal() {
-    modal.setAttribute('aria-hidden', 'false');
-    modal.style.display = 'flex';
-    setFocusTrap();
-    firstFocus.focus();
-    document.addEventListener('keydown', trapFocus);
-    document.addEventListener('keydown', escClose);
-  }
-
-  function closeModal() {
-    modal.setAttribute('aria-hidden', 'true');
-    modal.style.display = 'none';
-    document.removeEventListener('keydown', trapFocus);
-    document.removeEventListener('keydown', escClose);
-    openModalBtn.focus();
-  }
-
-  openModalBtn.addEventListener('click', e => {
-    e.preventDefault();
-    openModal();
-  });
-  closeElements.forEach(el => el.addEventListener('click', closeModal));
-  modal.addEventListener('click', e => {
-    if (e.target === modal) {
-      closeModal();
+    function openModal() {
+      modal.setAttribute('aria-hidden', 'false');
+      modal.style.display = 'flex';
+      setFocusTrap();
+      firstFocus.focus();
+      document.addEventListener('keydown', trapFocus);
+      document.addEventListener('keydown', escClose);
     }
-  });
+
+    function closeModal() {
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.display = 'none';
+      document.removeEventListener('keydown', trapFocus);
+      document.removeEventListener('keydown', escClose);
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      openModal();
+    });
+    closeEls.forEach(el => el.addEventListener('click', closeModal));
+    modal.addEventListener('click', e => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  }
+
+  setupModal('contact-modal', 'open-modal');
+  setupModal('newsletter-modal', 'open-newsletter'); // AI: newsletter setup
 </script>
 
   </div>
