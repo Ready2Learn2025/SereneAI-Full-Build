@@ -230,11 +230,15 @@
       resize: vertical;
     }
 
-    .newsletter-modal .modal-dialog { /* AI: smaller modal for newsletter */
+  .newsletter-modal .modal-dialog { /* AI: smaller modal for newsletter */
       max-width: 350px;
     }
 
   </style>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <script src="/firebase-config.js"></script>
+  <script src="/auth/auth.js" defer></script>
 </head>
 <body>
   <div class="layout">
@@ -250,6 +254,8 @@
             <a href="prompt-library.html" class="app-tile">🧠 Prompt Library</a>
             <a href="gpts.html" class="app-tile">🤖 GPT Tools</a>
             <a href="community.html" class="app-tile">🧑‍🤝‍🧑 Community</a>
+            <a id="nav-signin" href="/auth/login.html" class="app-tile">🔐 Sign In</a>
+            <button id="nav-signout" type="button" class="app-tile" style="display:none">🚪 Sign Out</button>
           </div>
         </nav>
       </div>
