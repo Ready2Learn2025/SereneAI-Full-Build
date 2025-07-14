@@ -59,6 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
       signOutBtn.style.display = signedIn ? 'flex' : 'none';
     });
 
+    signInLink.addEventListener('click', e => {
+      e.preventDefault();
+      window.location.href = '/auth/login.html';
+    });
+
     signOutBtn.addEventListener('click', async () => {
       try {
         await firebase.auth().signOut();
