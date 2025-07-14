@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Create a SereneAI account" />
+  <title>Register - SereneAI</title>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    .layout { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    header { padding: 1rem 0; display: flex; align-items: center; justify-content: space-between; }
+    .app-menu { position: relative; }
+    .app-menu-btn { background:#e5e5e5; border:1px solid transparent; border-radius:4px; cursor:pointer; padding:0.5rem 0.75rem; font-size:0.875rem; }
+    .app-menu-dropdown { display:none; position:absolute; right:0; top:100%; margin-top:0.5rem; background:#fff; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.15); padding:0.5rem; width:200px; z-index:100; }
+    .app-menu.open .app-menu-dropdown { display:block; }
+    .app-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem; }
+    @media(min-width:480px){ .app-grid{ grid-template-columns:repeat(3,1fr); } }
+    .app-tile { background:#f3f3f3; border-radius:6px; text-decoration:none; color:#333; padding:0.75rem 0.5rem; font-size:0.875rem; display:flex; align-items:center; justify-content:center; }
+    .auth-form { background:#fff; max-width:400px; margin:2rem auto; padding:2rem; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .auth-form label { display:block; margin-top:0.75rem; }
+    .auth-form input { width:100%; padding:0.5rem; margin-top:0.25rem; border:1px solid #ccc; border-radius:4px; }
+    .auth-form button { margin-top:1rem; padding:0.75rem 1.25rem; background:#0a84ff; color:#fff; border:none; border-radius:4px; cursor:pointer; width:100%; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+  <script src="/firebase-config.js"></script>
+  <script src="/auth/auth.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <header id="site-header">
+      <h1 class="site-title">SereneAI</h1>
+      <div class="app-menu" id="app-menu">
+        <button id="app-menu-btn" class="app-menu-btn" aria-label="Open site menu" aria-haspopup="true" aria-expanded="false">Navigation</button>
+        <nav id="site-nav" class="app-menu-dropdown" aria-label="Site">
+          <div class="app-grid">
+            <a href="/index.html" class="app-tile">🏠 Home</a>
+            <a href="/about.html" class="app-tile">ℹ️ About</a>
+            <a href="/prompt-library.html" class="app-tile">🧠 Prompt Library</a>
+            <a href="/gpts.html" class="app-tile">🤖 GPT Tools</a>
+            <a href="/community.html" class="app-tile">🧑‍🤝‍🧑 Community</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <form id="register-form" class="auth-form" novalidate>
+        <h2>Create Account</h2>
+        <label for="name">Name</label>
+        <input id="name" type="text" autocomplete="name" required />
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" required />
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="new-password" required />
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" autocomplete="new-password" required />
+        <button type="submit">Create Account</button>
+      </form>
+    </main>
+
+    <!-- Footer intentionally matches home page (currently empty) -->
+
+    <!-- Begin Cookie Banner -->
+    <div id="cookie-banner" role="dialog" aria-label="Cookie consent" aria-hidden="true" aria-live="polite" style="position:fixed;bottom:0;left:0;right:0;z-index:300;background:#f0f4f8;color:#002b5c;padding:.75rem 1rem;font-size:.875rem;box-shadow:0 -2px 6px rgba(0,0,0,0.15);display:none;flex-wrap:wrap;align-items:center;">
+      <span>This site uses cookies to enhance your experience. <a href="/privacy.html" style="color:#002b5c;text-decoration:underline;">Learn more</a></span>
+      <button id="accept-cookies" type="button" style="margin-left:auto;background:#002b5c;color:#fff;border:none;border-radius:4px;padding:0.5rem 1rem;font-size:.875rem;cursor:pointer;">Accept</button>
+    </div>
+
+    <script>
+      const appMenu = document.getElementById('app-menu');
+      const appMenuBtn = document.getElementById('app-menu-btn');
+      appMenuBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const opened = appMenu.classList.toggle('open');
+        appMenuBtn.setAttribute('aria-expanded', opened);
+      });
+      document.addEventListener('click', e => {
+        if (!appMenu.contains(e.target)) {
+          appMenu.classList.remove('open');
+          appMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // AI: cookie banner logic
+      (function() {
+        const consentKey = 'sa_cookie_consent';
+        const banner = document.getElementById('cookie-banner');
+        const accept = document.getElementById('accept-cookies');
+        if (!localStorage.getItem(consentKey)) {
+          banner.style.display = 'flex';
+          banner.setAttribute('aria-hidden', 'false');
+        }
+        function handleAccept() {
+          localStorage.setItem(consentKey, 'true');
+          banner.setAttribute('aria-hidden', 'true');
+          banner.style.display = 'none';
+        }
+        accept.addEventListener('click', handleAccept);
+        accept.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleAccept();
+          }
+        });
+      })();
+    </script>
+  </div>
+</body>
+</html>
